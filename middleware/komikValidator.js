@@ -16,3 +16,36 @@ const komikSchema = Joi.object({
     author: Joi.string().trim().min(1).max(100).required(),
 });
     
+
+const idSchema = Joi.object({
+    id: Joi.number().integer().positive().required(),
+});
+
+function validateBody(schema) {
+    return (req, res, next) => {
+        const { error, value } = schema.validate(req.body, { 
+            abortEarly: false,
+            convert: true,
+            allowUnknown: false,
+        });
+
+        if (error) {
+            return errorResponse(
+                res,
+                "Validation error",
+                400,
+                error.details.map((items) => ({
+                    field: items.path.join("."),
+                    message: items.message,
+                }))
+            );
+        }
+        req.body = value;
+        next();
+    }
+}
+
+
+
+
+
