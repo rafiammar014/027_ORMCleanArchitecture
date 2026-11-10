@@ -46,6 +46,29 @@ function validateBody(schema) {
 }
 
 
+function validateParams(schema) {
+    return (req, res, next) => {
+        const { error, value } = schema.validate(req.params,);
+
+        if (error) {
+            return errorResponse(
+                res,
+                "Parameter validation error",
+                400,
+                error.details.map((items) => ({
+                    field: items.path.join("."),
+                    message: items.message,
+                }))
+            );
+        }
+        req.params = value;
+        next();
+    };
+}
+
+module.exports = {komikSchema, idSchema, validateBody, validateParams};
+
+
 
 
 
