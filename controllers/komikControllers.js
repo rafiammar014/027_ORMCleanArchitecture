@@ -71,3 +71,12 @@ async function deleteKomik(req, res) {
         res.status(500).json({ error: 'failed to delete komik' });
     }
 }
+
+module.exports = {
+    getAllKomik,
+    getKomikById,
+    createKomik,
+    updateKomik,
+    deleteKomik
+};
+    
